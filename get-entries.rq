@@ -1,0 +1,12 @@
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+
+select distinct ?person ?personLabel ?rel ?relLabel ?thing ?thingLabel where {
+  ?person ?rel ?thing .
+  values (?rel ?relLabel) { (<https://knowledgepixels.com/kpxl-ontologies/rel/thinksIsOverrated> "thinks is overrated") (<https://knowledgepixels.com/kpxl-ontologies/rel/thinksIsUnderrated> "thinks is underrated") } .
+  ?thing <https://w3id.org/np/o/ntemplate/hasLabelFromApi> ?thingLabelStr .
+  bind(coalesce(replace(str(?thingLabelStr), " - .*", ""), replace(str(?thingLabelStr), "^.*/([^/]*)$", "$1")) as ?thingLabel)
+  optional {
+    ?person foaf:name ?personNameStr .
+    bind(str(?personNameStr) as ?personLabel) 
+  }
+}
