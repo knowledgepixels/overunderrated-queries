@@ -8,7 +8,7 @@ prefix foaf: <http://xmlns.com/foaf/0.1/>
 prefix nt: <https://w3id.org/np/o/ntemplate/>
 prefix opo: <https://w3id.org/kpxl/opo/terms/>
 
-select distinct (count(?person) as ?count) ?thing ?thingLabel where {
+select distinct (count(distinct ?person) as ?count) ?thing ?thingLabel where {
   graph npa:graph {
     ?np npa:hasHeadGraph ?h .
     ?np dct:created ?date .
@@ -23,9 +23,14 @@ select distinct (count(?person) as ?count) ?thing ?thingLabel where {
   }
   graph ?i {
     ?np dct:creator ?person .
-    ?thing nt:hasLabelFromApi ?thingLabelStr .
-    bind(coalesce(replace(str(?thingLabelStr), " - .*", ""), replace(str(?thingLabelStr), "^.*/([^/]*)$", "$1")) as ?thingLabel)
   }
+  optional { graph ?i {
+    ?thing nt:hasLabelFromApi ?thingLabelStr .
+  } }
+  optional { graph <http://purl.org/np/RA6p8TsYKPUmy6yoKuxjBKn2vRKczjIWrcS2lyyX61myE#assertion> {
+      ?thing rdfs:label ?thingLabelStr .
+  } }
+  bind(coalesce(replace(str(?thingLabelStr), " - .*", ""), replace(str(?thingLabelStr), "^.*/([^/]*)$", "$1"), str(?thing)) as ?thingLabel)
   filter not exists {
     graph npa:graph {
       ?newversion npa:hasHeadGraph ?nh .
