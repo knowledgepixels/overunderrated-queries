@@ -29,11 +29,9 @@ select distinct ?person ?personLabel ?rel ?relLabel ?thing ?thingLabel ?np ?npLa
   optional { graph ?i {
     ?thing nt:hasLabelFromApi ?thingLabelStr .
   } }
-  optional {
-    graph <http://purl.org/np/RA6p8TsYKP Umy6yoKuxjBKn2vRKczjIWrcS2lyyX61myE#assertion> {
+  optional { graph <http://purl.org/np/RA6p8TsYKPUmy6yoKuxjBKn2vRKczjIWrcS2lyyX61myE#assertion> {
       ?thing rdfs:label ?thingLabelStr .
-    }
-  }
+  } }
   bind(coalesce(replace(str(?thingLabelStr), " - .*", ""), replace(str(?thingLabelStr), "^.*/([^/]*)$", "$1"), str(?thing)) as ?thingLabel)
   optional {
     ?person foaf:name ?personNameStr .
