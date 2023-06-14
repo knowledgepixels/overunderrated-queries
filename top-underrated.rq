@@ -1,3 +1,7 @@
+#+ summary: Get a list of things that most people think are underrated.
+#+ method: GET
+#+ pagination: 1000
+
 prefix np: <http://www.nanopub.org/nschema#>
 prefix npa: <http://purl.org/nanopub/admin/>
 prefix npx: <http://purl.org/nanopub/x/>
