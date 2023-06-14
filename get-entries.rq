@@ -24,6 +24,7 @@ select distinct ?person ?personLabel ?rel ?relLabel ?thing ?thingLabel ?np ?npLa
     values (?rel ?relLabel) { (opo:thinksIsOverrated "thinks is overrated") (opo:thinksIsUnderrated "thinks is underrated") } .
   }
   graph ?i {
+    ?np dct:creator ?person .
     ?thing nt:hasLabelFromApi ?thingLabelStr .
     bind(coalesce(replace(str(?thingLabelStr), " - .*", ""), replace(str(?thingLabelStr), "^.*/([^/]*)$", "$1")) as ?thingLabel)
   }
