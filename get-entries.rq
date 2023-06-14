@@ -8,7 +8,7 @@ prefix foaf: <http://xmlns.com/foaf/0.1/>
 prefix nt: <https://w3id.org/np/o/ntemplate/>
 prefix opo: <https://w3id.org/kpxl/opo/terms/>
 
-select distinct ?person ?personLabel ?rel ?relLabel ?thing ?thingLabel ?np ?npLabel where {
+select distinct ?person ?personLabel ?rel ?relLabel ?thing ?thingLabel ?np ?npLabel ?date where {
   graph npa:graph {
     ?np npa:hasHeadGraph ?h .
     ?np dct:created ?date .
@@ -25,9 +25,16 @@ select distinct ?person ?personLabel ?rel ?relLabel ?thing ?thingLabel ?np ?npLa
   }
   graph ?i {
     ?np dct:creator ?person .
-    ?thing nt:hasLabelFromApi ?thingLabelStr .
-    bind(coalesce(replace(str(?thingLabelStr), " - .*", ""), replace(str(?thingLabelStr), "^.*/([^/]*)$", "$1")) as ?thingLabel)
   }
+  optional { graph ?i {
+    ?thing nt:hasLabelFromApi ?thingLabelStr .
+  } }
+  optional {
+    graph <http://purl.org/np/RA6p8TsYKP Umy6yoKuxjBKn2vRKczjIWrcS2lyyX61myE#assertion> {
+      ?thing rdfs:label ?thingLabelStr .
+    }
+  }
+  bind(coalesce(replace(str(?thingLabelStr), " - .*", ""), replace(str(?thingLabelStr), "^.*/([^/]*)$", "$1"), str(?thing)) as ?thingLabel)
   optional {
     ?person foaf:name ?personNameStr .
     bind(str(?personNameStr) as ?personLabel) 
@@ -57,3 +64,4 @@ select distinct ?person ?personLabel ?rel ?relLabel ?thing ?thingLabel ?np ?npLa
     }
   }
 }
+order by desc(?date)
