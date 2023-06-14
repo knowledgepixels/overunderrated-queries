@@ -1,3 +1,7 @@
+#+ summary: Get all entries of opinions that something is over-/underrated.
+#+ method: GET
+#+ pagination: 1000
+
 prefix np: <http://www.nanopub.org/nschema#>
 prefix npa: <http://purl.org/nanopub/admin/>
 prefix npx: <http://purl.org/nanopub/x/>
